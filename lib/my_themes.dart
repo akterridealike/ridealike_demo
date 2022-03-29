@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppColors{
   /*configurable colors stars*/
-  static Color accentColor = const Color.fromRGBO(230,46,4, 1);
+  static Color accentColor = const Color.fromRGBO(247, 142, 102, 1);
   static Color softAccentColor = const Color.fromRGBO(247,189,168, 1);
   static Color splashScreenColor = const Color.fromRGBO(	255, 248, 186,1); // if not sure , use the same color as accent color
   /*configurable colors ends*/

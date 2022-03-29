@@ -3,32 +3,28 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AuthRepository {
-  Future<LoginResponse?> getLoginResponse(String email, String password) async {
-    //   var postBody = jsonEncode({
-    //     "Email": email,
-    //     "Password": password,
-    //   });
-    //
-    //   Uri url = Uri.parse("http://apiuserstg.ridealike.com/v1/user.UserService/Login");
-    //   final response = await http.post(url,
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: postBody);
-    //   print(response.body);
-    //   return loginResponseFromJson(response.body);
-    // }
-    var headers = {'Content-Type': 'application/json'};
-    var request = http.Request('POST',
-        Uri.parse('http://api.user.stg.ridealike.com/v1/user.UserService/Login'));
-    request.body =
-        '''{\r\n    "Email":"$email",\r\n    "Password":"$password"\r\n}''';
-    request.headers.addAll(headers);
+  static Future<LoginResponse?> getLoginResponse(email, password) async {
+    var postBody = jsonEncode({
+      "Email": "$email",
+      "Password": '$password',
+    });
 
-    http.StreamedResponse response = await request.send();
-
-      print(response.stream);
-      return loginResponseFromJson(response.toString());
-      //author check
+    Uri url =
+        Uri.parse("https://apiuserstg.ridealike.com/v1/user.UserService/Login");
+    final response = await http.post(url,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: postBody);
+    // print(response.body);
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      print(response.body);
+      return LoginResponse.fromJson(json.decode(response.body));
+    } else {
+      print(response.statusCode);
+      print(response.body);
+      return null;
+    }
   }
 }

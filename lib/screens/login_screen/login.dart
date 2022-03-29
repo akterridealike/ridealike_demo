@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ridealike_demo/my_themes.dart';
+import 'package:ridealike_demo/screens/booking_details_screen/booking_details.dart';
 import 'package:toast/toast.dart';
 
 import '../../controllers/repositories/auth_repo.dart';
@@ -17,14 +18,15 @@ class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final bool isEnable=false;
-  String _email='';
-  String _pass ='';
+
 
   onPressedLoginBtn() async {
-    var email = _email;
-    var password = _pass;
+    var email = _emailController.text.toString();
+    var password = _passwordController.text.toString();
+    print(email);
+    print(password);
 
-    var loginResponse = await AuthRepository()
+    var loginResponse = await AuthRepository
         .getLoginResponse(email, password);
 
     if(email.isEmpty){
@@ -38,15 +40,16 @@ class _LoginState extends State<Login> {
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
 
     }else{
-      ToastComponent.showDialog("Congratulation //!", context,
+      ToastComponent.showDialog("Congratulation !", context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>Container() ));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BookingDetails() ));
 
 
     }
 
 
   }
+
 
 
 
@@ -69,10 +72,10 @@ class _LoginState extends State<Login> {
               children: [
                 Container(
                   margin: EdgeInsets.only(top: 60),
-                  height: 50,
-                  width: 170,
+                  height: 100,
+                  width: 100,
                   child: Image.asset(
-                    'images/header_logo.png',
+                    'images/logo_login.png',
                     fit: BoxFit.cover,
                   ),
                 )
@@ -95,12 +98,6 @@ class _LoginState extends State<Login> {
                   fillColor: AppColors.whiteColor,
                   inputType: TextInputType.emailAddress,
                   controller: _emailController,
-                  onChanged: (String value) {
-                    setState(() {
-                      _email =_emailController.text.toString();
-
-                    });
-                  },
                   label: "Email",
 
                 ),
@@ -114,11 +111,7 @@ class _LoginState extends State<Login> {
                   controller: _passwordController,
 
                   isShowSuffixIcon: true,
-                  isPassword: true, onChanged: (String value) {
-                    setState(() {
-                      _pass= _passwordController.text.toString();
-                    });
-                },
+                  isPassword: true,
                   label: "Password",
 
                 ),
@@ -144,20 +137,14 @@ class _LoginState extends State<Login> {
                   height: 50,
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 32,right: 32),
+                  margin: const EdgeInsets.only(left: 16,right: 16),
                   child:
-                  _email.isEmpty || _pass.isEmpty?
                   CustomButton(
                     btnTxt: "Login",
-                    backgroundColor: AppColors.darkGrey,
-                    onTap: null,
-                  ): CustomButton(
-                    btnTxt: "Login",
                     backgroundColor: AppColors.accentColor,
-                    onTap:(){
-                      onPressedLoginBtn();
-                    },
-                  ),
+                    onTap:() => onPressedLoginBtn(),
+                  )
+
                 ),
               ],
             ),

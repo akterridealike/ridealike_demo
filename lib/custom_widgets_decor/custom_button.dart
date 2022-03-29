@@ -5,7 +5,7 @@ class CustomButton extends StatefulWidget {
   final String? btnTxt;
   final Color? backgroundColor;
   final bool? isEnable;
-  const CustomButton({ this.onTap,  required this.btnTxt,this.backgroundColor, this.isEnable});
+   CustomButton({ this.onTap,  required this.btnTxt,this.backgroundColor, this.isEnable});
 
   @override
   State<CustomButton> createState() => _CustomButtonState();

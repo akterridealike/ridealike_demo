@@ -28,7 +28,7 @@ class CustomTextField extends StatefulWidget {
     this.isPassword = false,
     this.suffixIconUrl,
     this.label,
-    required this.onChanged,
+     this.onChanged,
   });
 
   @override
