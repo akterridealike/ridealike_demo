@@ -72,13 +72,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
           ),
           isDense: true,
           hintText: widget.hintText,
-          fillColor: widget.fillColor ?? Theme.of(context).accentColor,
           hintStyle: Theme.of(context).textTheme.headline2?.copyWith(
               fontSize: 12.0,
               color: Colors.black.withOpacity(.6),
               fontStyle: FontStyle.normal),
           filled: true,
-          prefixIconConstraints: const BoxConstraints(minWidth: 23, maxHeight: 20),
           suffixIcon: widget.isShowSuffixIcon
               ? widget.isPassword
               ? IconButton(

@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ridealike_demo/controllers/providers/login_provider.dart';
 import 'package:ridealike_demo/screens/booking_details_screen/booking_details.dart';
 import 'package:ridealike_demo/screens/login_screen/login.dart';
 import 'package:ridealike_demo/screens/profile_screen/profile.dart';
 import 'package:ridealike_demo/screens/swap_screen/swap.dart';
 
 void main() {
-  runApp(
-
-    MultiProvider(
-      providers :[
-        FutureProvider(create: , initialData: null),
-        StreamProvider(create: , initialData: null),
-        ChangeNotifierProvider(create: )
-      ],
-      child :  const MyApp()
-    )
-     );
+  runApp(MultiProvider(providers: [
+    //   FutureProvider(create: , initialData: null),
+    //   StreamProvider(create: , initialData: null),
+    ChangeNotifierProvider(create: (_) => LoginProvider())
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -28,20 +23,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       initialRoute: '/',
-      routes:{
-        '/':(context)=> const Login(),
-        BookingDetails.routeName:(ctx)=> const BookingDetails(),
-        SwapCar.routeName:(ctx)=>const SwapCar(),
-        Profile.routeName:(ctx)=> const Profile()
+      routes: {
+        // '/': (context) => const Login(),
+        BookingDetails.routeName: (ctx) => const BookingDetails(),
+        SwapCar.routeName: (ctx) => const SwapCar(),
+        Profile.routeName: (ctx) => const Profile()
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
-
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const Login(),
     );
   }
 }
-
-
