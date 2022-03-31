@@ -10,8 +10,17 @@ class BookingDetails extends StatefulWidget {
 class _BookingDetailsState extends State<BookingDetails> {
   @override
   Widget build(BuildContext context) {
+    var userData = ModalRoute.of(context)?.settings.arguments as Map<String,dynamic>;
     return Scaffold(
-      body: Container(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('${userData['userId']}'),
+            Text('${userData['jwt']}'),
+          ],
+        ),
+      ),
     );
   }
 }

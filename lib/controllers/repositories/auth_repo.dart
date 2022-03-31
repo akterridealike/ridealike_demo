@@ -1,9 +1,10 @@
+import 'package:ridealike_demo/controllers/providers/login_provider.dart';
 import 'package:ridealike_demo/data_model/login_response.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AuthRepository {
-  static Future<LoginResponse?> getLoginResponse(email, password) async {
+   Future<LoginResponse?> getLoginResponse(email, password) async {
     var postBody = jsonEncode({
       "Email": "$email",
       "Password": '$password',

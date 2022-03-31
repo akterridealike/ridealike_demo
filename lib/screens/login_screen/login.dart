@@ -28,13 +28,15 @@ class _LoginState extends State<Login> {
   String? _pass="";
 
 
-  onPressedLoginBtn() async {
+ Future onPressedLoginBtn() async {
     // _email = _emailController.text.toString();
     // _pass = _passwordController.text.toString();
     print(_email);
     print(_pass);
 
-    var loginResponse = await AuthRepository.getLoginResponse(_email, _pass);
+
+    await Provider.of<LoginProvider>(context,listen: false).getLoginData(_email, _pass);
+
 
     if (_email=='') {
       ToastComponent.showDialog("Enter Email", context,
@@ -42,17 +44,34 @@ class _LoginState extends State<Login> {
     } else if (_pass=='') {
       ToastComponent.showDialog("Enter Password", context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-    } else if (loginResponse?.user?.email != _email) {
+    } else if ( Provider.of<LoginProvider>(context,listen: false).email != _email) {
       ToastComponent.showDialog(
           "Authentication Error! Please check User name And Password", context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
     } else {
       ToastComponent.showDialog("Congratulation !", context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-      Navigator.of(context).pushNamed('/booking-details', arguments: null);
-      StoredData().secureData("user_email", _email);
+      Navigator.of(context).pushNamed('/booking-details', arguments: {
+        "userId": "${Provider.of<LoginProvider>(context,listen: false).userId}",
+        "jwt":"${Provider.of<LoginProvider>(context,listen: false).jwt}"
+      });
+
+        Provider.of<LoginProvider>(context,listen: false).userId;
+      print ("from login to check userId from provider ${Provider.of<LoginProvider>(context,listen: false).userId}");
+
+
     }
+     StoredData().writeData( "user_id", "${Provider.of<LoginProvider>(context,listen: false).userId}");
+     StoredData().writeData( "profile_id", "${Provider.of<LoginProvider>(context,listen: false).profileId}");
+     StoredData().writeData( "user_id",  "${Provider.of<LoginProvider>(context,listen: false).jwt}");
+     StoredData().readData("user_id");
+     print("${StoredData.data}");
+
+
+
+
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -148,9 +167,7 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+
                 loginProvider.error == null
                     ? Container()
                     : Text(
@@ -158,7 +175,7 @@ class _LoginState extends State<Login> {
                         style: TextStyle(color: Colors.red),
                       ),
                 SizedBox(
-                  height: 50,
+                  height: 30,
                 ),
                 _email == "" || _pass == ""
                     ? Container(
@@ -179,6 +196,9 @@ class _LoginState extends State<Login> {
                             });
                           },
                         )),
+                const SizedBox(
+                  height: 30,
+                ),
               ],
             ),
           ],
