@@ -4,8 +4,10 @@ import 'package:ridealike_demo/helpers/input_validator.dart';
 
 import '../../data_model/login_response.dart';
 
+//TODO proper formatting
 class LoginProvider extends ChangeNotifier{
   String? error;
+  //TODO method return type
   errorText(){
     var _error= Validator.errorData;
     if (_error){
@@ -26,6 +28,8 @@ class LoginProvider extends ChangeNotifier{
   String? get profileId =>_profileId;
   String? get jwt =>_jwt;
   String? get email=>_email;
+
+  //TODO need to return future or make it void
   Future<LoginResponse?> getLoginData(email,password)async{
     var loginResponse = await AuthRepository().getLoginResponse(email, password);
     _userId= loginResponse?.user?.userId;

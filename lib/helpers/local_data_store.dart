@@ -1,7 +1,9 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+//TODO method return types
 class StoredData {
    FlutterSecureStorage secureStorage =  const FlutterSecureStorage();
+   //TODO useless variable?
   static dynamic data;
   writeData(key ,value) async{
   await secureStorage.write(key:key, value: value);

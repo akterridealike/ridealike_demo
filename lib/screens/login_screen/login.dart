@@ -13,6 +13,7 @@ import '../../custom_widgets_decor/custom_button.dart';
 import '../../custom_widgets_decor/custom_textfield.dart';
 import '../../custom_widgets_decor/custom_toast.dart';
 
+//TODO proper formatting
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -27,7 +28,7 @@ class _LoginState extends State<Login> {
   String? _email= "";
   String? _pass="";
 
-
+ //TODO fix login check logic and flow
  Future onPressedLoginBtn() async {
     // _email = _emailController.text.toString();
     // _pass = _passwordController.text.toString();
