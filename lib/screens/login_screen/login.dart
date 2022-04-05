@@ -19,8 +19,7 @@ class _LoginState extends State<Login> {
   String? _pass = "";
   AuthController? authController;
 
-
-  onPressedLoginBtn() {
+  void onPressedLoginBtn() async {
     if (_email == '') {
       ToastComponent.showDialog(
         "Enter Email",
@@ -32,7 +31,7 @@ class _LoginState extends State<Login> {
         context,
       );
     } else {
-      authController?.loginUser(email: _email!, password: _pass!);
+      await authController?.loginUser(email: _email!, password: _pass!);
       if (authController?.resMessage != "") {
         ToastComponent.showDialog(
           "${authController?.resMessage}",
@@ -42,15 +41,17 @@ class _LoginState extends State<Login> {
       }
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    authController = Provider.of<AuthController>(context, listen: false);
   }
 
   @override
   Widget build(BuildContext context) {
+    authController = Provider.of<AuthController>(context, listen: true);
+    print("print from build method");
 
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
@@ -96,10 +97,10 @@ class _LoginState extends State<Login> {
                   inputType: TextInputType.emailAddress,
                   label: "Email",
                   onChanged: (val) {
-                    setState(() {
-                      _email = val;
-                      Validator.emailChecker(val);
-                    });
+                    Validator.emailChecker(val);
+                    authController?.errorText();
+                    print("warning Text:${authController?.error}");
+                    _email = val;
                   },
                 ),
                 const SizedBox(
@@ -154,7 +155,9 @@ class _LoginState extends State<Login> {
                           ? Colors.grey
                           : AppColors.accentColor,
                       onLoading: authController?.isLoading,
-                      onTap: _email == "" || _pass == ""?null: onPressedLoginBtn,
+                      onTap: _email == "" || _pass == ""
+                          ? null
+                          : onPressedLoginBtn,
                     )),
                 const SizedBox(
                   height: 30,

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 import 'package:ridealike_demo/app_constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:ridealike_demo/helpers/local_data_store.dart';
@@ -15,22 +16,21 @@ class AuthController extends ChangeNotifier {
   void errorText() {
     var _error = Validator.isMatch;
     if (_error) {
-      error = null;
+      error = "";
     } else {
       error = "Invalid email format";
-      notifyListeners();
-
-
     }
+    print('print from errortext method');
 
-
+    notifyListeners();
   }
 
-  void loginUser({
+  Future<void> loginUser({
     required String email,
     required String password,
   }) async {
     isLoading = true;
+    print("1:$isLoading");
     notifyListeners();
 
     String url = AppConstant.loginUrl;
@@ -43,11 +43,14 @@ class AuthController extends ChangeNotifier {
           await http.post(Uri.parse(url), body: json.encode(body));
 
       if (req.statusCode == 200 || req.statusCode == 201) {
+        print(req.body);
         final res = json.decode(req.body);
 
-        print(res);
+        print("decoded---$res");
         isLoading = false;
+        print("2:$isLoading");
         resMessage = "Login successfull!";
+        print(resMessage);
         notifyListeners();
 
         final userId = res['User']['UserID'];
@@ -63,7 +66,7 @@ class AuthController extends ChangeNotifier {
 
         print(res);
         isLoading = false;
-        notifyListeners();
+        // notifyListeners();
       }
     } on SocketException catch (_) {
       isLoading = false;
@@ -80,6 +83,6 @@ class AuthController extends ChangeNotifier {
 
   void clear() {
     resMessage = "";
-    notifyListeners();
+    // notifyListeners();
   }
 }

@@ -4,9 +4,12 @@ import 'package:ridealike_demo/controllers/auth_controller/auth_user.dart';
 import 'package:ridealike_demo/screens/login_screen/login.dart';
 
 void main() {
-  runApp(MultiProvider(
+  runApp(
+      MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => AuthController())],
-      child: const MyApp()));
+      child:
+  const MyApp())
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const Login(),
+      home: Login(),
     );
   }
 }
