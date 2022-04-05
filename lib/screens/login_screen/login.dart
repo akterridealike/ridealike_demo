@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:ridealike_demo/controllers/providers/login_provider.dart';
+import 'package:ridealike_demo/controllers/auth_controller/auth_user.dart';
 import 'package:ridealike_demo/helpers/input_validator.dart';
-import 'package:ridealike_demo/helpers/local_data_store.dart';
 import 'package:ridealike_demo/my_themes.dart';
-import 'package:ridealike_demo/screens/booking_details_screen/booking_details.dart';
-import 'package:toast/toast.dart';
-
-import '../../controllers/repositories/auth_repo.dart';
 import '../../custom_widgets_decor/custom_button.dart';
 import '../../custom_widgets_decor/custom_textfield.dart';
 import '../../custom_widgets_decor/custom_toast.dart';
@@ -21,62 +15,42 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-   bool isPressed = false;
-  String? _email= "";
-  String? _pass="";
+  String? _email = "";
+  String? _pass = "";
+  AuthController? authController;
 
 
- Future onPressedLoginBtn() async {
-    // _email = _emailController.text.toString();
-    // _pass = _passwordController.text.toString();
-    print(_email);
-    print(_pass);
-
-
-    await Provider.of<LoginProvider>(context,listen: false).getLoginData(_email, _pass);
-
-
-    if (_email=='') {
-      ToastComponent.showDialog("Enter Email", context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-    } else if (_pass=='') {
-      ToastComponent.showDialog("Enter Password", context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-    } else if ( Provider.of<LoginProvider>(context,listen: false).email != _email) {
+  onPressedLoginBtn() {
+    if (_email == '') {
       ToastComponent.showDialog(
-          "Authentication Error! Please check User name And Password", context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+        "Enter Email",
+        context,
+      );
+    } else if (_pass == '') {
+      ToastComponent.showDialog(
+        "Enter Password",
+        context,
+      );
     } else {
-      ToastComponent.showDialog("Congratulation !", context,
-          gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-      Navigator.of(context).pushNamed('/booking-details', arguments: {
-        "userId": "${Provider.of<LoginProvider>(context,listen: false).userId}",
-        "jwt":"${Provider.of<LoginProvider>(context,listen: false).jwt}"
-      });
-
-        Provider.of<LoginProvider>(context,listen: false).userId;
-      print ("from login to check userId from provider ${Provider.of<LoginProvider>(context,listen: false).userId}");
-
-
+      authController?.loginUser(email: _email!, password: _pass!);
+      if (authController?.resMessage != "") {
+        ToastComponent.showDialog(
+          "${authController?.resMessage}",
+          context,
+        );
+        authController?.clear();
+      }
     }
-     StoredData().writeData( "user_id", "${Provider.of<LoginProvider>(context,listen: false).userId}");
-     StoredData().writeData( "profile_id", "${Provider.of<LoginProvider>(context,listen: false).profileId}");
-     StoredData().writeData( "user_id",  "${Provider.of<LoginProvider>(context,listen: false).jwt}");
-     StoredData().readData("user_id");
-     print("${StoredData.data}");
-
-
-
-
   }
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    authController = Provider.of<AuthController>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
-    LoginProvider loginProvider =
-        Provider.of<LoginProvider>(context, listen: true);
 
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
@@ -94,7 +68,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 60),
+                  margin: const EdgeInsets.only(top: 60),
                   height: 100,
                   width: 100,
                   child: Image.asset(
@@ -105,7 +79,7 @@ class _LoginState extends State<Login> {
               ],
             ),
             Container(
-              margin: EdgeInsets.only(top: 50),
+              margin: const EdgeInsets.only(top: 50),
               child: const Text(
                 "Go Farther",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
@@ -120,19 +94,15 @@ class _LoginState extends State<Login> {
                   hintText: "Please Enter Email",
                   fillColor: AppColors.whiteColor,
                   inputType: TextInputType.emailAddress,
-                  // controller: _emailController,
                   label: "Email",
                   onChanged: (val) {
-                    Validator.emailChecker(val);
                     setState(() {
                       _email = val;
+                      Validator.emailChecker(val);
                     });
-                    loginProvider.errorText();
-                    print(Validator.emailChecker(val));
-                    print(val);
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 CustomTextField(
@@ -149,11 +119,11 @@ class _LoginState extends State<Login> {
                   isPassword: true,
                   label: "Password",
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 18,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: 30),
+                  padding: const EdgeInsets.only(right: 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -167,35 +137,25 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                 ),
-
-                loginProvider.error == null
+                authController?.error == null
                     ? Container()
                     : Text(
-                        loginProvider.error.toString(),
-                        style: TextStyle(color: Colors.red),
+                        "${authController?.error}",
+                        style: const TextStyle(color: Colors.red),
                       ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
-                _email == "" || _pass == ""
-                    ? Container(
-                        margin: const EdgeInsets.only(left: 16, right: 16),
-                        child: CustomButton(
-                          btnTxt: "Login",
-                          onTap: null,
-                        ))
-                    : Container(
-                        margin: const EdgeInsets.only(left: 16, right: 16),
-                        child: CustomButton(
-                          btnTxt: "Login",
-                          onPressed: isPressed,
-                          onTap: () {
-                            onPressedLoginBtn();
-                            setState(() {
-                              isPressed= true;
-                            });
-                          },
-                        )),
+                Container(
+                    margin: const EdgeInsets.only(left: 16, right: 16),
+                    child: CustomButton(
+                      btnTxt: "Login",
+                      backgroundColor: _email == "" || _pass == ""
+                          ? Colors.grey
+                          : AppColors.accentColor,
+                      onLoading: authController?.isLoading,
+                      onTap: _email == "" || _pass == ""?null: onPressedLoginBtn,
+                    )),
                 const SizedBox(
                   height: 30,
                 ),

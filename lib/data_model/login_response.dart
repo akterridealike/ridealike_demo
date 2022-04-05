@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-LoginResponse loginResponseFromJson(String str) => LoginResponse.fromJson(json.decode(str));
+
 
 
 class LoginResponse {
