@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:ridealike_demo/controllers/auth_controller/auth_user.dart';
 import 'package:ridealike_demo/screens/login_screen/login.dart';
 
+import 'screens/profile_screen/profile_view.dart';
+
 void main() {
   runApp(
       MultiProvider(

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:ridealike_demo/controllers/auth_controller/auth_user.dart';
 import 'package:ridealike_demo/helpers/input_validator.dart';
 import 'package:ridealike_demo/my_themes.dart';
+import 'package:ridealike_demo/screens/profile_screen/profile_view.dart';
 import '../../custom_widgets_decor/custom_button.dart';
 import '../../custom_widgets_decor/custom_textfield.dart';
 import '../../custom_widgets_decor/custom_toast.dart';
@@ -38,6 +39,10 @@ class _LoginState extends State<Login> {
           context,
         );
         authController?.clear();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ProfileScreen()));
       }
     }
   }
@@ -141,9 +146,9 @@ class _LoginState extends State<Login> {
                 authController?.error == null
                     ? Container()
                     : Text(
-                        "${authController?.error}",
-                        style: const TextStyle(color: Colors.red),
-                      ),
+                  "${authController?.error}",
+                  style: const TextStyle(color: Colors.red),
+                ),
                 const SizedBox(
                   height: 30,
                 ),
