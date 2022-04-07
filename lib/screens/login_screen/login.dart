@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ridealike_demo/controllers/auth_controller/auth_user.dart';
+import 'package:ridealike_demo/data_model/user_response.dart';
 import 'package:ridealike_demo/helpers/input_validator.dart';
 import 'package:ridealike_demo/my_themes.dart';
 import '../../custom_widgets_decor/custom_button.dart';
 import '../../custom_widgets_decor/custom_textfield.dart';
 import '../../custom_widgets_decor/custom_toast.dart';
+import '../../screens/profile_screen/profile_view.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -18,7 +20,6 @@ class _LoginState extends State<Login> {
   String? _email = "";
   String? _pass = "";
   AuthController? authController;
-
 
   onPressedLoginBtn() {
     if (_email == '') {
@@ -33,15 +34,18 @@ class _LoginState extends State<Login> {
       );
     } else {
       authController?.loginUser(email: _email!, password: _pass!);
-      if (authController?.resMessage != "") {
+      if (authController?.resMessage == "Login successfull!") {
         ToastComponent.showDialog(
           "${authController?.resMessage}",
           context,
         );
         authController?.clear();
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const ProfileScreen()));
       }
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -51,7 +55,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
@@ -154,7 +157,9 @@ class _LoginState extends State<Login> {
                           ? Colors.grey
                           : AppColors.accentColor,
                       onLoading: authController?.isLoading,
-                      onTap: _email == "" || _pass == ""?null: onPressedLoginBtn,
+                      onTap: _email == "" || _pass == ""
+                          ? null
+                          : onPressedLoginBtn,
                     )),
                 const SizedBox(
                   height: 30,

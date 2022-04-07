@@ -5,15 +5,15 @@ import 'package:ridealike_demo/screens/profile_screen/widgets/profile_btn.dart';
 
 import '../email_editing_screen/email_edit.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
   static String routeName = '/profile';
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileState extends State<Profile> implements ProfileInterface {
+class _ProfileScreenState extends State<ProfileScreen> implements ProfileInterface {
 
   bool? isLoading;
   ProfilePresenter? _presenter;
@@ -47,7 +47,7 @@ class _ProfileState extends State<Profile> implements ProfileInterface {
                   ),
                    ProfileButton(
                     titleText: "First Name",
-                    txtData: user.profile.firstName,
+                    txtData: user.profile.firstName.toString(),
                     isClickable: false,
                   ),
                   const SizedBox(
@@ -55,7 +55,7 @@ class _ProfileState extends State<Profile> implements ProfileInterface {
                   ),
                    ProfileButton(
                     titleText: "Last Name",
-                    txtData: user.profile.lastName,
+                    txtData: user.profile.lastName.toString(),
                     isClickable: false,
                   ),
                   const SizedBox(
@@ -63,7 +63,7 @@ class _ProfileState extends State<Profile> implements ProfileInterface {
                   ),
                   ProfileButton(
                     titleText: "Email",
-                    txtData: user.profile.email,
+                    txtData: user.profile.email.toString(),
                     isClickable: true,
                     onPressed: () {
                       Navigator.push(
