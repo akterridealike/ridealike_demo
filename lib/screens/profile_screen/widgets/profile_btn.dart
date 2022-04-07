@@ -18,7 +18,7 @@ class ProfileButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: isClickable == true ? onPressed : null,
-      style: TextButton.styleFrom(backgroundColor: Colors.black12),
+      style: TextButton.styleFrom(backgroundColor: Colors.grey[300]),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
@@ -40,7 +40,7 @@ class ProfileButton extends StatelessWidget {
                     ),
                     const SizedBox(width: 15),
                     Text(
-                      txtData ?? "demo@email",
+                      txtData ?? "",
                       style: const TextStyle(
                         fontFamily: 'SFProDisplayRegular ',
                         fontWeight: FontWeight.normal,

@@ -65,8 +65,9 @@ class AuthController extends ChangeNotifier {
         resMessage = res['message'];
 
         print(res);
+
         isLoading = false;
-        // notifyListeners();
+        notifyListeners();
       }
     } on SocketException catch (_) {
       isLoading = false;

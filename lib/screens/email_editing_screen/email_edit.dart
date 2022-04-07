@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../custom_widgets_decor/custom_button.dart';
@@ -26,19 +27,24 @@ class EmailEdit extends StatelessWidget {
           )),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CustomTextField(
-              label: "Email",
-              hintText: "demo@email",
-              controller:emailEditingController,
-            ),
-            CustomButton(btnTxt: 'Change Email',onTap: (){
-              print(emailEditingController.text);
+        child: Container(
+          margin: const EdgeInsets.only(top: 40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
 
-            },)
-          ],
+              CustomTextField(
+                label: "Email",
+                hintText: "demo@email",
+                controller:emailEditingController,
+              ),
+              CustomButton(btnTxt: 'Change Email',onTap: (){
+                print(emailEditingController.text);
+                print("emailEditingController.text");
+
+              },)
+            ],
+          ),
         ),
       ),
     );

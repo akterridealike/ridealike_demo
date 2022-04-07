@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
       );
     } else {
       await authController?.loginUser(email: _email!, password: _pass!);
-      if (authController?.resMessage != "") {
+      if (authController?.resMessage == "Login successfull!") {
         ToastComponent.showDialog(
           "${authController?.resMessage}",
           context,
@@ -43,6 +43,12 @@ class _LoginState extends State<Login> {
             context,
             MaterialPageRoute(
                 builder: (context) => const ProfileScreen()));
+      }else{
+        ToastComponent.showDialog(
+          "${authController?.resMessage}",
+          context,
+        );
+
       }
     }
   }

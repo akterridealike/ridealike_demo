@@ -22,7 +22,7 @@ class ProfilePresenter {
       String id = await StoredData().readData("profileId");
       UserResponse response =
       await _apiRepository.getUserData(context, jsonEncode({"ProfileID":id}) );
-      print(response);
+      print(response.profile?.firstName);
       _interface.onLoadedProfileData(response);
 
       _interface.onLoading(false);

@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> implements ProfileInterfa
                           context,
                           MaterialPageRoute(
                               builder: (context) => EmailEdit(
-                                    email: "${user.profile.firstName}",
+                                    email: user.profile.email.toString(),
                                   )));
                     },
                   )
@@ -96,6 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> implements ProfileInterfa
   @override
   onLoadedProfileData(response) {
     // TODO: implement onLoadedProfileData
+    user= response;
     print( response);
   }
 }
