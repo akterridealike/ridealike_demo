@@ -6,9 +6,12 @@ import 'package:ridealike_demo/screens/login_screen/login.dart';
 import 'screens/profile_screen/profile_view.dart';
 
 void main() {
-  runApp(MultiProvider(
+  runApp(
+      MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => AuthController())],
-      child: const MyApp()));
+      child:
+  const MyApp())
+  );
 }
 
 class MyApp extends StatelessWidget {
