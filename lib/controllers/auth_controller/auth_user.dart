@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:ridealike_demo/app_constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:ridealike_demo/data_model/login_response.dart';
 import 'package:ridealike_demo/helpers/local_data_store.dart';
 import 'dart:convert';
 
@@ -12,6 +13,7 @@ class AuthController extends ChangeNotifier {
   bool isLoading = false;
   String resMessage = '';
   String? error;
+  String? email;
 
   void errorText() {
     var _error = Validator.isMatch;
@@ -31,7 +33,7 @@ class AuthController extends ChangeNotifier {
   }) async {
     isLoading = true;
     print("1:$isLoading");
-    notifyListeners();
+    // notifyListeners();
 
     String url = AppConstant.loginUrl;
 
@@ -46,19 +48,24 @@ class AuthController extends ChangeNotifier {
         print(req.body);
         final res = json.decode(req.body);
 
-        print("decoded---$res");
+        print("print from auth controller $email");
+        LoginResponse.fromJson(res);
+
         isLoading = false;
         print("2:$isLoading");
         resMessage = "Login successfull!";
         print(resMessage);
-        notifyListeners();
+        // notifyListeners();
 
         final userId = res['User']['UserID'];
         final profileId = res['User']['ProfileID'];
         final token = res['JWT'];
-        StoredData().writeData("userId", userId);
+        email = res['User']['Email'];
+
+        StoredData().writeData("email", email);
         StoredData().writeData("profileId", profileId);
         StoredData().writeData("jwt", token);
+        StoredData().writeData("userId",userId );
       } else {
         final res = json.decode(req.body);
 
@@ -67,19 +74,20 @@ class AuthController extends ChangeNotifier {
         print(res);
 
         isLoading = false;
-        notifyListeners();
+        // notifyListeners();
       }
     } on SocketException catch (_) {
       isLoading = false;
       resMessage = "Internet connection is not available`";
-      notifyListeners();
+      // notifyListeners();
     } catch (e) {
       isLoading = false;
       resMessage = "Please try again`";
-      notifyListeners();
+      // notifyListeners();
 
       print("$e");
     }
+    notifyListeners();
   }
 
   void clear() {

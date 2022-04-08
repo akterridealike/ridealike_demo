@@ -15,4 +15,14 @@ class ApiRepository{
       return Future.error(e);
     }
   }
+
+  Future getUpdateEmail(BuildContext context, dynamic data)async{
+    try {
+      final response = await ApiClient.post(AppConstant.updateEmailUrl,data);
+      var responseData = UserResponse.fromJson(response);
+      return responseData;
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 class ToastComponent {
-  static showDialog(String msg, context, {duration = 0, gravity = 0}) {
+  static showToast(String msg, context, {duration = 0, gravity = 0}) {
     Fluttertoast.showToast(
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,

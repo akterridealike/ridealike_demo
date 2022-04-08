@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ridealike_demo/controllers/auth_controller/auth_user.dart';
@@ -22,33 +23,30 @@ class _LoginState extends State<Login> {
 
   void onPressedLoginBtn() async {
     if (_email == '') {
-      ToastComponent.showDialog(
+      ToastComponent.showToast(
         "Enter Email",
         context,
       );
     } else if (_pass == '') {
-      ToastComponent.showDialog(
+      ToastComponent.showToast(
         "Enter Password",
         context,
       );
     } else {
       await authController?.loginUser(email: _email!, password: _pass!);
       if (authController?.resMessage == "Login successfull!") {
-        ToastComponent.showDialog(
+        ToastComponent.showToast(
           "${authController?.resMessage}",
           context,
         );
         authController?.clear();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const ProfileScreen()));
-      }else{
-        ToastComponent.showDialog(
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => const ProfileScreen()));
+      } else {
+        ToastComponent.showToast(
           "${authController?.resMessage}",
           context,
         );
-
       }
     }
   }
@@ -69,7 +67,7 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         backgroundColor: AppColors.lightGrey,
         elevation: 0.0,
-        title: Text(""),
+        title: const Text(""),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -110,7 +108,9 @@ class _LoginState extends State<Login> {
                   onChanged: (val) {
                     Validator.emailChecker(val);
                     authController?.errorText();
-                    print("warning Text:${authController?.error}");
+                    if (kDebugMode) {
+                      print("warning Text:${authController?.error}");
+                    }
                     _email = val;
                   },
                 ),
@@ -152,9 +152,9 @@ class _LoginState extends State<Login> {
                 authController?.error == null
                     ? Container()
                     : Text(
-                  "${authController?.error}",
-                  style: const TextStyle(color: Colors.red),
-                ),
+                        "${authController?.error}",
+                        style: const TextStyle(color: Colors.red),
+                      ),
                 const SizedBox(
                   height: 30,
                 ),
