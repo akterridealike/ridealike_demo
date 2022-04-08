@@ -20,13 +20,13 @@ class ProfilePresenter {
     try {
       _interface.onLoading(true);
       String id = await StoredData().readData("profileId");
-      UserResponse response =
-      await _apiRepository.getUserData(context, jsonEncode({"ProfileID":id}) );
+      UserResponse response = await _apiRepository.getUserData(
+          context, jsonEncode({"ProfileID": id}));
+      _interface.onLoading(false);
       print(response.profile?.firstName);
       _interface.onLoadedProfileData(response);
-
-      _interface.onLoading(false);
     } catch (e) {
+      _interface.onLoading(false);
       print(e.toString());
       _interface.onError();
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ridealike_demo/data_model/user_response.dart';
 import 'package:ridealike_demo/screens/profile_screen/profile_interface.dart';
 import 'package:ridealike_demo/screens/profile_screen/profile_presenter.dart';
 import 'package:ridealike_demo/screens/profile_screen/widgets/profile_btn.dart';
@@ -7,18 +8,18 @@ import '../email_editing_screen/email_edit.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
-  static String routeName = '/profile';
+
+  // static String routeName = '/profile';
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> implements ProfileInterface {
-
+class _ProfileScreenState extends State<ProfileScreen>
+    implements ProfileInterface {
   bool? isLoading;
   ProfilePresenter? _presenter;
-  dynamic user;
-
+  UserResponse? user;
 
   @override
   void initState() {
@@ -30,7 +31,6 @@ class _ProfileScreenState extends State<ProfileScreen> implements ProfileInterfa
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -40,42 +40,46 @@ class _ProfileScreenState extends State<ProfileScreen> implements ProfileInterfa
                   color: Colors.red,
                 ),
               )
-            : Column(
-                children: [
-                  const SizedBox(
-                    height: 150,
-                  ),
-                   ProfileButton(
-                    titleText: "First Name",
-                    txtData: user.profile.firstName.toString(),
-                    isClickable: false,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                   ProfileButton(
-                    titleText: "Last Name",
-                    txtData: user.profile.lastName.toString(),
-                    isClickable: false,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ProfileButton(
-                    titleText: "Email",
-                    txtData: user.profile.email.toString(),
-                    isClickable: true,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EmailEdit(
-                                    email: user.profile.email.toString(),
-                                  )));
-                    },
+            : user != null
+                ? Column(
+                    children: [
+                      const SizedBox(
+                        height: 150,
+                      ),
+                      ProfileButton(
+                        titleText: "First Name",
+                        txtData: user?.profile?.firstName.toString(),
+                        isClickable: false,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ProfileButton(
+                        titleText: "Last Name",
+                        txtData: user?.profile?.lastName.toString(),
+                        isClickable: false,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ProfileButton(
+                        titleText: "Email",
+                        txtData: user?.profile?.email.toString(),
+                        isClickable: true,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EmailEdit(
+                                        email: user?.profile?.email.toString(),
+                                      )));
+                        },
+                      )
+                    ],
                   )
-                ],
-              ),
+                : const Center(
+                  child: Text("Something Wrong"),
+                ),
       ),
     );
   }
@@ -96,7 +100,9 @@ class _ProfileScreenState extends State<ProfileScreen> implements ProfileInterfa
   @override
   onLoadedProfileData(response) {
     // TODO: implement onLoadedProfileData
-    user= response;
-    print( response);
+    setState(() {
+      user = response;
+    });
+    print(response);
   }
 }

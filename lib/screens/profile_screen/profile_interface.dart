@@ -1,9 +1,7 @@
-class ProfileInterface{
-  onError(){
-  }
-  onLoading(bool? loading){
-  }
-  onLoadedProfileData(dynamic response){
+class ProfileInterface {
+  void onError() {}
 
-  }
+  void onLoading(bool? loading) {}
+
+  void onLoadedProfileData(dynamic response) {}
 }
