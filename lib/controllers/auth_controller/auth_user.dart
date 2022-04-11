@@ -33,7 +33,7 @@ class AuthController extends ChangeNotifier {
   }) async {
     isLoading = true;
     print("1:$isLoading");
-    // notifyListeners();
+    notifyListeners();
 
     String url = AppConstant.loginUrl;
 
@@ -55,7 +55,7 @@ class AuthController extends ChangeNotifier {
         print("2:$isLoading");
         resMessage = "Login successfull!";
         print(resMessage);
-        // notifyListeners();
+        notifyListeners();
 
         final userId = res['User']['UserID'];
         final profileId = res['User']['ProfileID'];
@@ -74,7 +74,7 @@ class AuthController extends ChangeNotifier {
         print(res);
 
         isLoading = false;
-        // notifyListeners();
+        notifyListeners();
       }
     } on SocketException catch (_) {
       isLoading = false;
@@ -83,11 +83,11 @@ class AuthController extends ChangeNotifier {
     } catch (e) {
       isLoading = false;
       resMessage = "Please try again`";
-      // notifyListeners();
+      notifyListeners();
 
       print("$e");
     }
-    notifyListeners();
+
   }
 
   void clear() {

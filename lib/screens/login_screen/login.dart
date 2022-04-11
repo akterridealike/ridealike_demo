@@ -40,8 +40,8 @@ class _LoginState extends State<Login> {
           context,
         );
         authController?.clear();
-        // Navigator.push(context,
-        //     MaterialPageRoute(builder: (context) => const ProfileScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const ProfileScreen()));
       } else {
         ToastComponent.showToast(
           "${authController?.resMessage}",

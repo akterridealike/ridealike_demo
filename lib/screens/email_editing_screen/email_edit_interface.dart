@@ -1,5 +1,5 @@
 class EmailEditInterface {
-  void onSuccess() {}
+  void onSuccess(bool message) {}
 
-  void onError() {}
+  void onError(String s) {}
 }

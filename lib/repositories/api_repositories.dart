@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:ridealike_demo/helpers/local_data_store.dart';
 
 import '../app_constants.dart';
 import '../data_model/user_response.dart';
@@ -17,10 +18,11 @@ class ApiRepository{
   }
 
   Future getUpdateEmail(BuildContext context, dynamic data)async{
+    String jwt = await StoredData().readData("jwt");
     try {
-      final response = await ApiClient.post(AppConstant.updateEmailUrl,data);
-      var responseData = UserResponse.fromJson(response);
-      return responseData;
+      final response = await ApiClient.post(AppConstant.updateEmailUrl,data,token:jwt );
+
+      return response;
     } catch (e) {
       return Future.error(e);
     }
