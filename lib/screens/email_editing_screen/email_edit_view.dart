@@ -36,14 +36,14 @@ class _EmailEditState extends State<EmailEdit> implements EmailEditInterface {
     _presenter= EmailEditPresenter(this);
   }
 
-  void onPressedEmailCngBtn() {
+  void onPressedEmailCngBtn()async {
     if (emailEditingController.text.isEmpty) {
-      ToastComponent.showToast("Email can't be empty", this);
+      ToastComponent.showToast("Email can't be empty", context);
     } else {
-      _presenter?.updateEmail(context, emailEditingController.text.toString());
+    await _presenter?.updateEmail(context, emailEditingController.text.toString());
       isSuccess == true
           ? ToastComponent.showToast("Successfully Changed", context)
-          : ToastComponent.showToast(errorMessage!, context);
+          : ToastComponent.showToast("errorMessage", context);
       print("clivked onchange email");
 
     }
@@ -98,7 +98,9 @@ class _EmailEditState extends State<EmailEdit> implements EmailEditInterface {
   @override
   void onSuccess(bool message) {
     // TODO: implement onSuccess
-    isSuccess= message;
+
+      isSuccess= message;
+
   }
 
 }

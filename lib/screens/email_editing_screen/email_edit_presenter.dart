@@ -16,17 +16,18 @@ class EmailEditPresenter {
     _apiRepository = ApiRepository();
   }
 
-  void updateEmail(BuildContext context, String newEmail) async {
+   updateEmail(BuildContext context, String newEmail) async {
     String userId = await StoredData().readData("userId");
     String email = await StoredData().readData("email");
     try {
+      print("service call started");
       var response = await _apiRepository?.getUpdateEmail(context,
-          jsonEncode({"Email": email, "NewEmail": newEmail, "UserId": userId}));
-      print(response["Status"]['success']);
-      print(jsonEncode({"Email": email, "NewEmail": newEmail, "UserId": userId}));
-      _interface?.onSuccess(response['Status']['success']);
+          {"Email": email, "NewEmail": newEmail, "UserID": userId});
+      print("respnse from presenter${response.status.success}");
+      _interface?.onSuccess(response.status.success);
     } catch (e) {
       _interface?.onError("$e");
+      print(e);
     }
   }
 }

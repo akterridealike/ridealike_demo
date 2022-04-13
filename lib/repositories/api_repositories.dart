@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:ridealike_demo/helpers/local_data_store.dart';
 
 import '../app_constants.dart';
+import '../data_model/update_email_response.dart';
 import '../data_model/user_response.dart';
 import '../helpers/api_client.dart';
 
@@ -20,10 +23,12 @@ class ApiRepository{
   Future getUpdateEmail(BuildContext context, dynamic data)async{
     String jwt = await StoredData().readData("jwt");
     try {
-      final response = await ApiClient.post(AppConstant.updateEmailUrl,data,token:jwt );
+      print("api call started");
+      final response = await ApiClient.post(AppConstant.updateEmailUrl,json.encode(data),token:jwt );
+      return UpdateEmailResponse.fromJson(response);
 
-      return response;
     } catch (e) {
+      print("exception from repository$e");
       return Future.error(e);
     }
   }

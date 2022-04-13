@@ -119,6 +119,6 @@ class _ProfileScreenState extends State<ProfileScreen>
     setState(() {
       user = response;
     });
-    print(response);
+
   }
 }
