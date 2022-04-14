@@ -8,5 +8,10 @@ class AppConstant {
   static const getProfileUrl =
       profileBaseUrl + "/v1/profile.ProfileService/GetProfile";
 
+//trips url
+  static const tripsUrl =
+      "https://api.trip.stg.ridealike.com/v1/trip.TripService/GetAllUserTripsByStatusGroup";
 
+  //car url
+  static const carUrl = "https://api.car.stg.ridealike.com/v1/car.CarService/GetCarsByCarIDs";
 }

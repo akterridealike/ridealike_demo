@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-UpcomingTripsResponse upcomingTripsResponseFromJson(String str) => UpcomingTripsResponse.fromJson(json.decode(str));
+// UpcomingTripsResponse upcomingTripsResponseFromJson(String str) => UpcomingTripsResponse.fromJson(json.decode(str));
 
 
 class UpcomingTripsResponse {

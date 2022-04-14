@@ -8,6 +8,7 @@ import 'package:ridealike_demo/screens/profile_screen/profile_view.dart';
 import '../../custom_widgets_decor/custom_button.dart';
 import '../../custom_widgets_decor/custom_textfield.dart';
 import '../../custom_widgets_decor/custom_toast.dart';
+import '../trips_screen/trips.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -41,7 +42,7 @@ class _LoginState extends State<Login> {
         );
         authController?.clear();
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ProfileScreen()));
+            MaterialPageRoute(builder: (context) => const Trips()));
       } else {
         ToastComponent.showToast(
           "${authController?.resMessage}",
