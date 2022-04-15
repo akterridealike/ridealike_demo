@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
 
 class ApiClient {
+  //ToDo review @fida
   static Future<BaseOptions> _options(String token) async {
     return BaseOptions(
       connectTimeout: 30000,
@@ -51,6 +52,7 @@ class ApiClient {
       if(response.statusCode==200){
         return jsonDecode(response.toString());
       }else {
+
         print("data not getting from remote");
       }
 
