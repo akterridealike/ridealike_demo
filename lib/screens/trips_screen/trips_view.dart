@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:ridealike_demo/data_model/car_details_response.dart';
 import 'package:ridealike_demo/data_model/upcoming_trips_response.dart';
 import 'package:ridealike_demo/screens/trips_screen/trips_interface.dart';
 import 'package:ridealike_demo/screens/trips_screen/trips_presenter.dart';
+
+import '../../repositories/api_repositories.dart';
 
 class Trips extends StatefulWidget {
   const Trips({Key? key}) : super(key: key);
@@ -12,14 +15,16 @@ class Trips extends StatefulWidget {
 }
 
 class _TripsState extends State<Trips> implements TripsInterFace {
-  CarResponse? _carResponse;
   TripsPresenter? _presenter;
+  ApiRepository? _apiRepository;
 
   @override
   void initState() {
     super.initState();
-    //Todo scheduler binding should apply
-    _presenter = TripsPresenter(this);
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+      _presenter = TripsPresenter(this);
+      _apiRepository = ApiRepository();
+    });
   }
 
   @override
@@ -37,53 +42,64 @@ class _TripsState extends State<Trips> implements TripsInterFace {
             } else if (tripSnapshot.hasData) {
               var tripData = tripSnapshot.data?.trips as List;
               print("trips $tripData");
-              // var carData = _carResponse?.cars as List;
-              //Todo should make a method
-              return ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: false,
-                  //have to declare count
-                  itemCount: tripData.length,
-                  itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 200,
-                                child: Image.network(
-                                  "",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const Text("{carData[index].name}"),
-                              Text("${tripData[index].startDateTime}"),
-                              Text("${tripData[index].endDateTime}")
-                            ],
-                          ),
-                        ),
-                      ));
+              return upcomingTripsListView(tripData);
             } else {
-              return tripSnapshot.connectionState == ConnectionState.waiting
-                  ? const Center(child: CircularProgressIndicator())
-                  : const Center(
-                      child: Text("No Data found"),
-                    );
+              return const Center(child: CircularProgressIndicator());
             }
           }),
     );
   }
 
-  @override
-  void onLoadedCarData(carData) {
-    _carResponse = carData;
+  ListView upcomingTripsListView(List<dynamic> tripData) {
+    return ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: false,
+        //have to declare count
+        itemCount: tripData.length,
+        itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Column(
+                  children: [
+                    FutureBuilder<CarResponse?>(
+                        future: _apiRepository?.getCarData(
+                            context, {"CarID": "${tripData[index].carId}"}),
+                        builder: (context, carSnapshot) {
+                          if (carSnapshot.hasData) {
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  height: 200,
+                                  child: Image.network(
+                                    "https://api.storage.stg.ridealike.com/${carSnapshot.data?.car?.imagesAndDocuments?.images?.mainImageId}",
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Text("${carSnapshot.data?.car?.name}"),
+                              ],
+                            );
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        }),
+                    Text("${tripData[index].startDateTime}"),
+                    Text("${tripData[index].endDateTime}")
+                  ],
+                ),
+              ),
+            ));
   }
 
   @override
   void onLoadedTripData(data) {
     // TODO: implement onLoadedTripData
+  }
+
+  @override
+  void onLoadedCarData(List<CarResponse> caName, List<CarResponse> carImage) {
+    setState(() {});
   }
 }

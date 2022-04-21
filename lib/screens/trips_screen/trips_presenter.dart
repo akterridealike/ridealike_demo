@@ -17,22 +17,19 @@ class TripsPresenter {
 
   Stream<UpcomingTripsResponse> getTripData(BuildContext context) async* {
     String userId = await StoredData().readData("userId");
-    //ToDo try catch block
-    UpcomingTripsResponse upcomingTripsResponse = await _apiRepository
-        ?.getTripsData(context, {
-      "Limit": "200",
-      "Skip": "0",
-      "UserID": userId,
-      "TripStatusGroup": "Upcoming"
-    });
+    try {
+      UpcomingTripsResponse upcomingTripsResponse = await _apiRepository
+          ?.getTripsData(context, {
+        "Limit": "200",
+        "Skip": "0",
+        "UserID": userId,
+        "TripStatusGroup": "Upcoming"
+      });
 
-    // List<String?> carIds = [];
-    // for (var i in upcomingTripsResponse.trips!) {
-    //   carIds.add(i.carId);
-    // }
-    // var carData = await _apiRepository?.getCarData(context, {"carIDs": carIds});
-    // _interFace?.onLoadedCarData(carData);
+      yield upcomingTripsResponse;
+    } catch (e) {
+      print("error from tripspressenter $e");
+    }
 
-    yield upcomingTripsResponse;
   }
 }

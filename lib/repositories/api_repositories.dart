@@ -48,7 +48,7 @@ class ApiRepository {
     }
   }
 
-  Future getCarData(BuildContext context, dynamic data) async {
+  Future<CarResponse?> getCarData(BuildContext context, dynamic data) async {
     String jwt = await StoredData().readData("jwt");
     try {
       final response = await ApiClient.post(
@@ -56,10 +56,12 @@ class ApiRepository {
           token: jwt);
 
       CarResponse carResponse = CarResponse.fromJson(response);
+      print(carResponse);
       return carResponse;
     } catch (e) {
       print("exception from repository$e");
       return Future.error(e);
     }
+   
   }
 }
