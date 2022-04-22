@@ -102,12 +102,12 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   onError() {
-    // TODO: implement onError
+
   }
 
   @override
   onLoading(bool? loading) {
-    // TODO: implement onLoading
+
     setState(() {
       isLoading = loading;
     });
@@ -115,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   onLoadedProfileData(response) {
-    // TODO: implement onLoadedProfileData
+
     setState(() {
       user = response;
     });

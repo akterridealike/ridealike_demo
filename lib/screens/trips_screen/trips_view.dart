@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:ridealike_demo/data_model/car_details_response.dart';
 import 'package:ridealike_demo/data_model/upcoming_trips_response.dart';
 import 'package:ridealike_demo/screens/trips_screen/trips_interface.dart';
@@ -12,14 +13,17 @@ class Trips extends StatefulWidget {
 }
 
 class _TripsState extends State<Trips> implements TripsInterFace {
-  CarResponse? _carResponse;
+  late List _carName;
+  late List _carImage;
   TripsPresenter? _presenter;
 
   @override
   void initState() {
     super.initState();
-    //Todo scheduler binding should apply
-    _presenter = TripsPresenter(this);
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+      _presenter = TripsPresenter(this);
+    });
+
   }
 
   @override
@@ -28,8 +32,8 @@ class _TripsState extends State<Trips> implements TripsInterFace {
       appBar: AppBar(
         title: const Text(""),
       ),
-      body: StreamBuilder<UpcomingTripsResponse>(
-          stream: _presenter?.getTripData(context),
+      body: FutureBuilder<UpcomingTripsResponse>(
+          future: _presenter?.getTripData(context),
           builder: (context, tripSnapshot) {
             if (tripSnapshot.hasError) {
               print("error from futurebuilder${tripSnapshot.error}");
@@ -55,11 +59,12 @@ class _TripsState extends State<Trips> implements TripsInterFace {
                               SizedBox(
                                 height: 200,
                                 child: Image.network(
-                                  "",
+                                 // "",
+                                  "https://api.storage.ridealike.com/${_carImage[index]}",
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              const Text("{carData[index].name}"),
+                               Text("${_carName[index]}"),
                               Text("${tripData[index].startDateTime}"),
                               Text("${tripData[index].endDateTime}")
                             ],
@@ -67,23 +72,23 @@ class _TripsState extends State<Trips> implements TripsInterFace {
                         ),
                       ));
             } else {
-              return tripSnapshot.connectionState == ConnectionState.waiting
-                  ? const Center(child: CircularProgressIndicator())
-                  : const Center(
-                      child: Text("No Data found"),
-                    );
+              return  const Center(child: CircularProgressIndicator());
+
+
             }
           }),
     );
   }
 
   @override
-  void onLoadedCarData(carData) {
-    _carResponse = carData;
+  void onLoadedCarData(List<String?> carName,List<String?> carImage) {
+   setState(() {
+     _carName = carName ;
+     _carImage= carImage ;
+   });
   }
 
-  @override
-  void onLoadedTripData(data) {
-    // TODO: implement onLoadedTripData
-  }
+  // void onLoadedTripData(data) {
+  //
+  // }
 }

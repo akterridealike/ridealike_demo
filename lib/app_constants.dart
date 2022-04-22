@@ -13,5 +13,5 @@ class AppConstant {
       "https://api.trip.stg.ridealike.com/v1/trip.TripService/GetAllUserTripsByStatusGroup";
 
   //car url
-  static const carUrl = "https://api.car.stg.ridealike.com/v1/car.CarService/GetCarsByCarIDs";
+  static const carUrl = "https://api.car.stg.ridealike.com//v1/car.CarService/GetCar";
 }

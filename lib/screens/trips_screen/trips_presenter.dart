@@ -4,6 +4,7 @@ import 'package:ridealike_demo/data_model/upcoming_trips_response.dart';
 import 'package:ridealike_demo/repositories/api_repositories.dart';
 import 'package:ridealike_demo/screens/trips_screen/trips_interface.dart';
 
+import '../../data_model/car_details_response.dart';
 import '../../helpers/local_data_store.dart';
 
 class TripsPresenter {
@@ -15,7 +16,7 @@ class TripsPresenter {
     _interFace = interFace;
   }
 
-  Stream<UpcomingTripsResponse> getTripData(BuildContext context) async* {
+  Future<UpcomingTripsResponse> getTripData(BuildContext context) async {
     String userId = await StoredData().readData("userId");
     //ToDo try catch block
     UpcomingTripsResponse upcomingTripsResponse = await _apiRepository
@@ -26,13 +27,18 @@ class TripsPresenter {
       "TripStatusGroup": "Upcoming"
     });
 
-    // List<String?> carIds = [];
-    // for (var i in upcomingTripsResponse.trips!) {
-    //   carIds.add(i.carId);
-    // }
-    // var carData = await _apiRepository?.getCarData(context, {"carIDs": carIds});
-    // _interFace?.onLoadedCarData(carData);
+    List<String?> carName = [];
+    List<String?> image = [];
 
-    yield upcomingTripsResponse;
+    upcomingTripsResponse.trips?.asMap().forEach((index, trip) async {
+      CarResponse carData =
+          await _apiRepository?.getCarData(context, {"CarID": trip.carId});
+      carName.add(carData.cars![index].name);
+      image.add(carData.cars![index].imagesAndDocuments?.images?.mainImageId);
+    });
+
+    _interFace?.onLoadedCarData(carName, image);
+
+    return upcomingTripsResponse;
   }
 }
