@@ -16,29 +16,30 @@ class TripsPresenter {
     _interFace = interFace;
   }
 
-  Future<UpcomingTripsResponse> getTripData(BuildContext context) async {
+  Future<UpcomingTripsResponse?> getTripData(BuildContext context) async {
     String userId = await StoredData().readData("userId");
-    //ToDo try catch block
-    UpcomingTripsResponse upcomingTripsResponse = await _apiRepository
-        ?.getTripsData(context, {
-      "Limit": "200",
-      "Skip": "0",
-      "UserID": userId,
-      "TripStatusGroup": "Upcoming"
-    });
+    List<String?> carIds = [];
+    try {
+      UpcomingTripsResponse upcomingTripsResponse = await _apiRepository
+          ?.getTripsData(context, {
+        "Limit": "200",
+        "Skip": "0",
+        "UserID": userId,
+        "TripStatusGroup": "Upcoming"
+      });
 
-    List<String?> carName = [];
-    List<String?> image = [];
+      for (var i in upcomingTripsResponse.trips!) {
+        carIds.add(i.carId);
+      }
 
-    upcomingTripsResponse.trips?.asMap().forEach((index, trip) async {
-      CarResponse carData =
-          await _apiRepository?.getCarData(context, {"CarID": trip.carId});
-      carName.add(carData.cars![index].name);
-      image.add(carData.cars![index].imagesAndDocuments?.images?.mainImageId);
-    });
+      CarResponse carResponse =
+          await _apiRepository?.getCarData(context, {"carIDs": carIds});
 
-    _interFace?.onLoadedCarData(carName, image);
-
-    return upcomingTripsResponse;
+      _interFace?.onLoadedCarData(carResponse.cars);
+      return upcomingTripsResponse;
+    } catch (e) {
+      print("error from presenmter$e");
+      return Future.error(e);
+    }
   }
 }

@@ -45,7 +45,7 @@ class Car {
     this.createdAt,
     this.submittedAt,
     this.updatedAt,
-    this.rating,
+    // this.rating,
     this.numberOfTrips,
     this.totalRatingCount,
     this.numberOfCancelledTrips,
@@ -67,7 +67,7 @@ class Car {
   DateTime? createdAt;
   DateTime? submittedAt;
   DateTime? updatedAt;
-  int? rating;
+  // int? rating;
   String? numberOfTrips;
   String? totalRatingCount;
   String? numberOfCancelledTrips;
@@ -90,7 +90,7 @@ class Car {
         createdAt: DateTime.parse(json["CreatedAt"]),
         submittedAt: DateTime.parse(json["SubmittedAt"]),
         updatedAt: DateTime.parse(json["UpdatedAt"]),
-        rating: json["Rating"],
+        // rating: json["Rating"],
         numberOfTrips: json["NumberOfTrips"],
         totalRatingCount: json["TotalRatingCount"],
         numberOfCancelledTrips: json["NumberOfCancelledTrips"],
@@ -113,7 +113,7 @@ class Car {
         "CreatedAt": createdAt?.toIso8601String(),
         "SubmittedAt": submittedAt?.toIso8601String(),
         "UpdatedAt": updatedAt?.toIso8601String(),
-        "Rating": rating,
+        // "Rating": rating,
         "NumberOfTrips": numberOfTrips,
         "TotalRatingCount": totalRatingCount,
         "NumberOfCancelledTrips": numberOfCancelledTrips,

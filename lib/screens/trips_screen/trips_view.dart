@@ -13,17 +13,14 @@ class Trips extends StatefulWidget {
 }
 
 class _TripsState extends State<Trips> implements TripsInterFace {
-  late List _carName;
-  late List _carImage;
+  List? _carList;
   TripsPresenter? _presenter;
 
   @override
   void initState() {
+    //return futurebuilder connectionState.none value if i use schedulerBindings
     super.initState();
-    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
-      _presenter = TripsPresenter(this);
-    });
-
+    _presenter = TripsPresenter(this);
   }
 
   @override
@@ -32,63 +29,65 @@ class _TripsState extends State<Trips> implements TripsInterFace {
       appBar: AppBar(
         title: const Text(""),
       ),
-      body: FutureBuilder<UpcomingTripsResponse>(
+      body: FutureBuilder<UpcomingTripsResponse?>(
           future: _presenter?.getTripData(context),
           builder: (context, tripSnapshot) {
             if (tripSnapshot.hasError) {
-              print("error from futurebuilder${tripSnapshot.error}");
-              return Text("Something Error");
+              return const Text("Something Error");
             } else if (tripSnapshot.hasData) {
               var tripData = tripSnapshot.data?.trips as List;
-              print("trips $tripData");
-              // var carData = _carResponse?.cars as List;
-              //Todo should make a method
-              return ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: false,
-                  //have to declare count
-                  itemCount: tripData.length,
-                  itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 200,
-                                child: Image.network(
-                                 // "",
-                                  "https://api.storage.ridealike.com/${_carImage[index]}",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                               Text("${_carName[index]}"),
-                              Text("${tripData[index].startDateTime}"),
-                              Text("${tripData[index].endDateTime}")
-                            ],
-                          ),
-                        ),
-                      ));
+              return buildUpcomingCarListView(tripData);
             } else {
-              return  const Center(child: CircularProgressIndicator());
-
-
+              return const Center(child: CircularProgressIndicator());
             }
           }),
     );
   }
 
-  @override
-  void onLoadedCarData(List<String?> carName,List<String?> carImage) {
-   setState(() {
-     _carName = carName ;
-     _carImage= carImage ;
-   });
+  ListView buildUpcomingCarListView(List<dynamic> tripData) {
+    return ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: false,
+        //have to declare count
+        itemCount: tripData.length,
+        itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 200,
+                      child: Image.network(
+                        // "",
+                        "https://api.storage.stg.ridealike.com/${_carList![getCar(tripData[index].carId)].imagesAndDocuments.images.mainImageId}",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                        "${_carList![getCar(tripData[index].carId)].about.make}"),
+                    Text("${tripData[index].startDateTime}"),
+                    Text("${tripData[index].endDateTime}")
+                  ],
+                ),
+              ),
+            ));
   }
 
-  // void onLoadedTripData(data) {
-  //
-  // }
+  @override
+  void onLoadedCarData(List<Car>? carList) {
+    // TODO: implement onLoadedCarData
+
+    _carList = carList as List;
+  }
+
+  int getCar(carId) {
+    int carIndex = _carList!.indexWhere((element) => element.id == carId);
+    return carIndex;
+  }
 }
