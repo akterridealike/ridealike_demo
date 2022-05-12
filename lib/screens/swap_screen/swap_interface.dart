@@ -1,0 +1,3 @@
+class SwapInterface {
+  void onLoadedSwapCars() {}
+}

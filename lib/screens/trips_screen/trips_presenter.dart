@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:ridealike_demo/data_model/upcoming_trips_response.dart';
 import 'package:ridealike_demo/repositories/api_repositories.dart';
 import 'package:ridealike_demo/screens/trips_screen/trips_interface.dart';
@@ -38,8 +39,11 @@ class TripsPresenter {
       _interFace?.onLoadedCarData(carResponse.cars);
       return upcomingTripsResponse;
     } catch (e) {
-      print("error from presenmter$e");
+      if (kDebugMode) {
+        print("error from presenter$e");
+      }
       return Future.error(e);
     }
   }
+
 }

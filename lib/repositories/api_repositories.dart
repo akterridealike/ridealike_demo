@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:ridealike_demo/data_model/car_details_response.dart';
+import 'package:ridealike_demo/data_model/swap_car_recommend_response.dart';
 import 'package:ridealike_demo/helpers/local_data_store.dart';
-import 'package:ridealike_demo/screens/trips_screen/trips_view.dart';
-import 'package:ridealike_demo/screens/trips_screen/trips_interface.dart';
 
 import '../app_constants.dart';
 import '../data_model/upcoming_trips_response.dart';
@@ -58,7 +58,42 @@ class ApiRepository {
       CarResponse carResponse = CarResponse.fromJson(response);
       return carResponse;
     } catch (e) {
-      print("exception from repository$e");
+      if (kDebugMode) {
+        print("exception from repository$e");
+      }
+      return Future.error(e);
+    }
+  }
+
+  Future getSwapAvailableCarsByUserId(
+      BuildContext context, dynamic data) async {
+    String jwt = await StoredData().readData("jwt");
+    try {
+      final response = await ApiClient.post(
+          AppConstant.swapCarUrl, json.encode(data),
+          token: jwt);
+      return response;
+    } catch (e) {
+      if (kDebugMode) {
+        print("exception from repository$e");
+      }
+      return Future.error(e);
+    }
+  }
+
+  Future getSwapRecommendationCars(BuildContext context, dynamic data) async {
+    String jwt = await StoredData().readData("jwt");
+    try {
+      final response = await ApiClient.post(
+          AppConstant.swapCarUrl, json.encode(data),
+          token: jwt);
+      SwapCarRecommendResponse swapCarResponse =
+          SwapCarRecommendResponse.fromJson(response);
+      return swapCarResponse;
+    } catch (e) {
+      if (kDebugMode) {
+        print("exception from repository$e");
+      }
       return Future.error(e);
     }
   }

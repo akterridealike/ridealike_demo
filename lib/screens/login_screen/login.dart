@@ -5,6 +5,7 @@ import 'package:ridealike_demo/controllers/auth_controller/auth_user.dart';
 import 'package:ridealike_demo/helpers/input_validator.dart';
 import 'package:ridealike_demo/my_themes.dart';
 import 'package:ridealike_demo/screens/profile_screen/profile_view.dart';
+import 'package:ridealike_demo/screens/swap_screen/swap_view.dart';
 import '../../custom_widgets_decor/custom_button.dart';
 import '../../custom_widgets_decor/custom_textfield.dart';
 import '../../custom_widgets_decor/custom_toast.dart';
@@ -42,7 +43,7 @@ class _LoginState extends State<Login> {
         );
         authController?.clear();
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const Trips()));
+            MaterialPageRoute(builder: (context) => const SwapCar()));
       } else {
         ToastComponent.showToast(
           "${authController?.resMessage}",

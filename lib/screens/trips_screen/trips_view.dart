@@ -18,7 +18,7 @@ class _TripsState extends State<Trips> implements TripsInterFace {
 
   @override
   void initState() {
-    //return futurebuilder connectionState.none value if i use schedulerBindings
+    //return futureBuilder connectionState.none value if i use schedulerBindings
     super.initState();
     _presenter = TripsPresenter(this);
   }
