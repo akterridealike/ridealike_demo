@@ -85,11 +85,11 @@ class ApiRepository {
     String jwt = await StoredData().readData("jwt");
     try {
       final response = await ApiClient.post(
-          AppConstant.swapCarUrl, json.encode(data),
+          AppConstant.swapCarRecommendationUrl, json.encode(data),
           token: jwt);
-      SwapCarRecommendResponse swapCarResponse =
+      SwapCarRecommendResponse swapCarRecommendResponse =
           SwapCarRecommendResponse.fromJson(response);
-      return swapCarResponse;
+      return swapCarRecommendResponse;
     } catch (e) {
       if (kDebugMode) {
         print("exception from repository$e");

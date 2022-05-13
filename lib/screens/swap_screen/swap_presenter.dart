@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:ridealike_demo/screens/swap_screen/swap_interface.dart';
 
 import '../../helpers/local_data_store.dart';
@@ -20,15 +17,40 @@ class SwapPresenter {
 
   Future getSwapRecommendedCarsData(BuildContext context) async {
     LocationData _locationData = await getCurrentLocation();
+    String carToSwapId;
+    int skip = 0;
+    List? swapRecommendCarList;
+
     String userId = await StoredData().readData("userId");
-    var swapAvailableCarsResponse =
-        _apiRepository?.getSwapAvailableCarsByUserId(context, {
-      "UserID": userId,
-    });
-    List availDataList = json.decode(swapAvailableCarsResponse.toString() )['SwapAvailabilitys'];
-    if (kDebugMode) {
-      print(availDataList);
+    try {
+      var swapAvailableCarsResponse =
+          await _apiRepository?.getSwapAvailableCarsByUserId(context, {
+        "UserID": userId,
+      });
+      if (swapAvailableCarsResponse['CarToSwapID'] != '') {
+        List availDataList = swapAvailableCarsResponse['SwapAvailabilitys'];
+        carToSwapId = swapAvailableCarsResponse['CarToSwapID'];
+        List carIds = [];
+        for (var data in availDataList) {
+          carIds.add(data['CarID']);
+        }
+        if (carIds.contains(carToSwapId)) {
+          var swapRecommendCars =
+              await _apiRepository?.getSwapRecommendationCars(context, {
+            "UserID": userId,
+            "LatLng": {
+              "Latitude": _locationData.latitude,
+              "Longitude": _locationData.longitude
+            },
+            "Skip": "$skip"
+          });
+          swapRecommendCarList = swapRecommendCars.cars;
+          var finalCarList = swapRecommendCarList
+              ?.removeWhere((element) => element.hostUserId == userId);
+        }
+      }
+    } catch (e) {
+      print(e);
     }
-    return availDataList;
   }
 }

@@ -1,3 +1,5 @@
+import '../../data_model/swap_car_recommend_response.dart';
+
 class SwapInterface {
-  void onLoadedSwapCars() {}
+  void onLoadedSwapCars(List? swapCarList) {}
 }
