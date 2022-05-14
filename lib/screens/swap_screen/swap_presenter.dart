@@ -45,12 +45,19 @@ class SwapPresenter {
             "Skip": "$skip"
           });
           swapRecommendCarList = swapRecommendCars.cars;
-          var finalCarList = swapRecommendCarList
-              ?.removeWhere((element) => element.hostUserId == userId);
+          swapRecommendCarList = swapRecommendCarList
+              ?.map((element) {
+                if(element.hostUserId != userId){
+                  return element;
+                }
+          }).toList();
+
         }
       }
+      _interFace?.onLoadedSwapCars(swapRecommendCarList);
+
     } catch (e) {
-      print(e);
+      print("from swap presenter $e");
     }
   }
 }
