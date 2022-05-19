@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
         );
         authController?.clear();
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const Trips()));
+            MaterialPageRoute(builder: (context) => const SwapCar()));
       } else {
         ToastComponent.showToast(
           "${authController?.resMessage}",

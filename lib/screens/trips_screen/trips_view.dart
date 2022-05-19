@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:ridealike_demo/data_model/car_details_response.dart';
 import 'package:ridealike_demo/data_model/upcoming_trips_response.dart';
 import 'package:ridealike_demo/screens/swap_screen/swap_view.dart';

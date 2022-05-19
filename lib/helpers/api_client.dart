@@ -5,6 +5,7 @@ import 'dart:io' as io;
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
+import 'package:flutter/foundation.dart';
 
 class ApiClient {
   //ToDo review @fida
@@ -53,7 +54,9 @@ class ApiClient {
         return jsonDecode(response.toString());
       }else {
 
-        print("data not getting from remote");
+        if (kDebugMode) {
+          print("data not getting from remote");
+        }
       }
 
     } catch (e) {

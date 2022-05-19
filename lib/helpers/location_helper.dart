@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:location/location.dart';
 import 'dart:async';
 import 'package:permission_handler/permission_handler.dart' as permission_handler;
@@ -25,7 +26,9 @@ Future<permission_handler.PermissionStatus> requestPermission() async {
   await checkPermission();
   if (permission != permission_handler.PermissionStatus.granted) {
     permission = await permission_handler.Permission.locationWhenInUse.request();
-    print(permission);
+    if (kDebugMode) {
+      print(permission);
+    }
 
   }
   return permission;
