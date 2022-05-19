@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:ridealike_demo/data_model/car_details_response.dart';
 import 'package:ridealike_demo/data_model/upcoming_trips_response.dart';
+import 'package:ridealike_demo/screens/swap_screen/swap_view.dart';
 import 'package:ridealike_demo/screens/trips_screen/trips_interface.dart';
 import 'package:ridealike_demo/screens/trips_screen/trips_presenter.dart';
 
@@ -41,6 +42,8 @@ class _TripsState extends State<Trips> implements TripsInterFace {
               return const Center(child: CircularProgressIndicator());
             }
           }),
+      floatingActionButton: FloatingActionButton(onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const SwapCar())); },
+      child: const Text("Swap Cars"),),
     );
   }
 
