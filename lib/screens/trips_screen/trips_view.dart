@@ -5,6 +5,7 @@ import 'package:ridealike_demo/screens/swap_screen/swap_view.dart';
 import 'package:ridealike_demo/screens/trips_screen/trips_interface.dart';
 import 'package:ridealike_demo/screens/trips_screen/trips_presenter.dart';
 
+
 class Trips extends StatefulWidget {
   const Trips({Key? key}) : super(key: key);
 
@@ -86,6 +87,7 @@ class _TripsState extends State<Trips> implements TripsInterFace {
     // TODO: implement onLoadedCarData
 
     _carList = carList as List;
+
   }
 
   int getCar(carId) {

@@ -37,6 +37,7 @@ dependencies:
   dio_logger: ^4.0.8+8
   location: ^4.3.0
   permission_handler: ^9.2.0
+  mixpanel_flutter: ^1.5.1
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -12,6 +12,7 @@ class SwapCar extends StatefulWidget {
 class _SwapCarState extends State<SwapCar> implements SwapInterface {
   SwapPresenter? _presenter;
   List? _carList;
+  int _index= 0;
 
   @override
   void initState() {
@@ -24,32 +25,81 @@ class _SwapCarState extends State<SwapCar> implements SwapInterface {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _carList==null?const Center(child: CircularProgressIndicator()):
-      Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 200,
-              child: Image.network(
-                // "",
-                "https://api.storage.stg.ridealike.com/${_carList![0].imageIDs[0]}",
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text("${_carList![0].title}"),
-            Text("${_carList![0].fuelType}"),
-            Text("${_carList![0].location}")
-          ],
-        ),
-      )
-    );
+        body: _carList == null
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
+                children: [
+                  SizedBox(
 
+                    width: double.infinity,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            child:
+                            Image.network(
+
+                              // "",
+                              "https://api.storage.stg.ridealike.com/${_carList![_index].imageIDs[0]}",
+                              fit: BoxFit.cover,
+                              loadingBuilder: (BuildContext context, Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Container(
+                                  height: 200,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value: loadingProgress.expectedTotalBytes != null
+                                          ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                          : null,
+                                    ),
+                                  ),
+                                );
+                              },
+
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text("${_carList![_index].title}"),
+                          Text("${_carList![_index].fuelType}"),
+                          Text("${_carList![_index].location}")
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 50,),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+
+                              setState(() {
+                              _index+=1;
+                            });
+                            },
+
+                          child: const Text('Skip'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+
+                          },
+                          child: const Text('Like'),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ));
   }
 
   @override

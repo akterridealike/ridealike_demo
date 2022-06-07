@@ -7,6 +7,7 @@ import 'package:ridealike_demo/screens/trips_screen/trips_interface.dart';
 
 import '../../data_model/car_details_response.dart';
 import '../../helpers/local_data_store.dart';
+import '../../helpers/mixpanel.dart';
 
 class TripsPresenter {
   ApiRepository? _apiRepository;
@@ -37,6 +38,7 @@ class TripsPresenter {
           await _apiRepository?.getCarData(context, {"carIDs": carIds});
 
       _interFace?.onLoadedCarData(carResponse.cars);
+      MixpanelEvent.logDetect("trips",properties:{"cars":carResponse.cars?.length});
       return upcomingTripsResponse;
     } catch (e) {
       if (kDebugMode) {

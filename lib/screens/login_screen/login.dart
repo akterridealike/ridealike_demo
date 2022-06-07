@@ -9,6 +9,7 @@ import 'package:ridealike_demo/screens/swap_screen/swap_view.dart';
 import '../../custom_widgets_decor/custom_button.dart';
 import '../../custom_widgets_decor/custom_textfield.dart';
 import '../../custom_widgets_decor/custom_toast.dart';
+import '../../helpers/mixpanel.dart';
 import '../trips_screen/trips_view.dart';
 
 class Login extends StatefulWidget {
@@ -43,7 +44,7 @@ class _LoginState extends State<Login> {
         );
         authController?.clear();
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SwapCar()));
+            MaterialPageRoute(builder: (context) => const Trips()));
       } else {
         ToastComponent.showToast(
           "${authController?.resMessage}",
@@ -51,12 +52,14 @@ class _LoginState extends State<Login> {
         );
       }
     }
+    MixpanelEvent.logDetect("log in",properties:{"email":_email});
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
   }
 
   @override
